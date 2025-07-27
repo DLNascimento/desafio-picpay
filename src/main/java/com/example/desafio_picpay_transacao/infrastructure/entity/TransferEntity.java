@@ -21,15 +21,13 @@ public class TransferEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    BigDecimal balance;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "payer_id")
-    UserEntity payer_id;
+    UserEntity payer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "payee_id")
-    UserEntity payee_id;
+    UserEntity payee;
 
     LocalDateTime localDateTime;
 

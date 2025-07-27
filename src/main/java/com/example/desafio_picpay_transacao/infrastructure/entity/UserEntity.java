@@ -1,10 +1,9 @@
 package com.example.desafio_picpay_transacao.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -12,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "table_user")
+@Builder
 public class UserEntity {
 
     @Id
@@ -27,6 +27,8 @@ public class UserEntity {
 
     String password;
 
+
+    BigDecimal balance;
 
     UserType userType;
 }
