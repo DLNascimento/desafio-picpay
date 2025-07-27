@@ -1,4 +1,4 @@
-package com.example.desafio_picpay_transacao.infrastructure;
+package com.example.desafio_picpay_transacao.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
