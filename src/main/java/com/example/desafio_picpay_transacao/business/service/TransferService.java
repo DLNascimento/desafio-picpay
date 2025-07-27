@@ -4,9 +4,9 @@ import com.example.desafio_picpay_transacao.business.dto.TransferDTO;
 import com.example.desafio_picpay_transacao.infrastructure.entity.TransferEntity;
 import com.example.desafio_picpay_transacao.infrastructure.entity.UserEntity;
 import com.example.desafio_picpay_transacao.infrastructure.entity.UserType;
+import com.example.desafio_picpay_transacao.infrastructure.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,14 @@ import java.util.Map;
 public class TransferService {
 
     private final UserService userService;
+    private final TransferRepository transferRepository;
     private final RestTemplate restTemplate;
 
 
     @Value("${authorization.response.url}")
     private String authorizationUrl;
+    @Value("${notification.response.url}")
+    private String notificationUrl;
 
 
     @Transactional
@@ -46,6 +49,10 @@ public class TransferService {
 
         payer.setBalance(payer.getBalance().subtract(dto.value()));
         payee.setBalance(payee.getBalance().add(dto.value()));
+
+        transferRepository.save(newTransfer);
+
+        notificationResponse();
 
 
     }
@@ -74,9 +81,16 @@ public class TransferService {
                 return true;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getCause();
         }
         return false;
+    }
+
+    public boolean notificationResponse() {
+
+        ResponseEntity<String> notificationResponse =
+                restTemplate.postForEntity(notificationUrl, null, String.class);
+        return true;
     }
 }
