@@ -19,6 +19,7 @@ public class UserEntity {
     private Long id;
 
     String fullName;
+
     @Column(unique = true, nullable = false)
     private String document;
 

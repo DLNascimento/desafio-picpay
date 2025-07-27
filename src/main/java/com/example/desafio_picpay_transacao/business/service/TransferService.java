@@ -39,7 +39,7 @@ public class TransferService {
         UserEntity payee = userService.findUserById(dto.payee());
         userTypeValidation(payer);
         balanceTransferValidation(payer, dto.value());
-        authorizationResponse(payer, dto.value());
+        authorizationResponse();
 
         TransferEntity newTransfer = new TransferEntity();
         newTransfer.setAmount(dto.value());
@@ -71,7 +71,7 @@ public class TransferService {
         }
     }
 
-    public boolean authorizationResponse(UserEntity user, BigDecimal value) {
+    public boolean authorizationResponse() {
         ResponseEntity<Map> authorizationResponse =
                 restTemplate.getForEntity(authorizationUrl, Map.class);
         try {
