@@ -1,9 +1,11 @@
 package com.example.desafio_picpay_transacao.business.service;
 
 import com.example.desafio_picpay_transacao.business.dto.TransferDTO;
+import com.example.desafio_picpay_transacao.infrastructure.dto.TransferAuthorizationDTO;
 import com.example.desafio_picpay_transacao.infrastructure.entity.TransferEntity;
 import com.example.desafio_picpay_transacao.infrastructure.entity.UserEntity;
 import com.example.desafio_picpay_transacao.infrastructure.entity.UserType;
+import com.example.desafio_picpay_transacao.infrastructure.exception.UnauthorizedTransactionException;
 import com.example.desafio_picpay_transacao.infrastructure.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -71,26 +72,27 @@ public class TransferService {
         }
     }
 
-    public boolean authorizationResponse() {
-        ResponseEntity<Map> authorizationResponse =
-                restTemplate.getForEntity(authorizationUrl, Map.class);
+    public void authorizationResponse() {
         try {
+            ResponseEntity<TransferAuthorizationDTO> authorizationResponse =
+                    restTemplate.getForEntity(authorizationUrl, TransferAuthorizationDTO.class);
             if (authorizationResponse.getStatusCode()
-                    == HttpStatus.OK && authorizationResponse.getBody()
-                    .get("message") == "Autorizado") {
-                return true;
+                    == HttpStatus.OK) {
+                assert authorizationResponse.getBody() != null;
+                if (authorizationResponse.getBody().data().authorization()) {
+                    return;
+                }
             }
 
         } catch (Exception e) {
             e.getCause();
         }
-        return false;
+        throw new UnauthorizedTransactionException("Transação não autorizada");
     }
 
-    public boolean notificationResponse() {
+    public void notificationResponse() {
 
         ResponseEntity<String> notificationResponse =
                 restTemplate.postForEntity(notificationUrl, null, String.class);
-        return true;
     }
 }
