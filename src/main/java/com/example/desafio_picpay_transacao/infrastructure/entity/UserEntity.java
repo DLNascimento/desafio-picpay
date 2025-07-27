@@ -16,19 +16,20 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     String fullName;
     @Column(unique = true, nullable = false)
-    String document;
+    private String document;
 
     @Column(unique = true, nullable = false)
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
 
-    BigDecimal balance;
+    private BigDecimal balance;
 
-    UserType userType;
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 }

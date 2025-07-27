@@ -1,5 +1,7 @@
 package com.example.desafio_picpay_transacao.controller;
 
+import com.example.desafio_picpay_transacao.business.dto.TransferDTO;
+import com.example.desafio_picpay_transacao.business.service.TransferService;
 import com.example.desafio_picpay_transacao.business.service.UserService;
 import com.example.desafio_picpay_transacao.infrastructure.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/transfer")
-public class UserController {
+public class TransferController {
 
     private final UserService userService;
+    private final TransferService transferService;
 
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity<UserDTO> saveUsers(@RequestBody UserDTO userDTO){
 
         return ResponseEntity.ok(userService.saveUser(userDTO));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createTransfer(@RequestBody TransferDTO transferDTO){
+        transferService.createTransfer(transferDTO);
+        return ResponseEntity.ok().build();
     }
 
 }

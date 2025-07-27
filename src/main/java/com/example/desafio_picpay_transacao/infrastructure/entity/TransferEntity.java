@@ -1,10 +1,7 @@
 package com.example.desafio_picpay_transacao.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,22 +11,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "table_tranfer")
+@Table(name = "table_transfer")
+@Builder
 public class TransferEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+
+    private BigDecimal amount;
 
     @ManyToOne
     @JoinColumn(name = "payer_id")
-    UserEntity payer;
+    private UserEntity payer;
 
     @ManyToOne
     @JoinColumn(name = "payee_id")
-    UserEntity payee;
+    private UserEntity payee;
 
-    LocalDateTime localDateTime;
+    private LocalDateTime localDateTime;
 
 
 }
