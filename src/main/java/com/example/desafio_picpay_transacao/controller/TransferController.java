@@ -2,8 +2,6 @@ package com.example.desafio_picpay_transacao.controller;
 
 import com.example.desafio_picpay_transacao.business.dto.TransferDTO;
 import com.example.desafio_picpay_transacao.business.service.TransferService;
-import com.example.desafio_picpay_transacao.business.service.UserService;
-import com.example.desafio_picpay_transacao.infrastructure.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
